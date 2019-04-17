@@ -1,8 +1,11 @@
 import socket
+import datetime
+import random
 
 host = "localhost"
 port = 9999
 global soketi
+
 
 #Krijimi i soketit
 try:
@@ -25,12 +28,17 @@ while 1:
     print("Serveri u lidh me klientin me IP adrese " + str(address[0]) + " ne portin " + str(address[1]))
 
 
+#...........................Metoda IPADRESA......................................
 def IPADRESA():
     print("IP adresa e klientit eshte: " + str(address[0]))
 
+
+#...........................Metoda NUMRIIPORTIT...................................
 def NUMRIIPORTIT():
     print("Numri i portit te klientit eshte: " + str(address[1]))
 
+
+#...........................Metoda BASHKETINGELLORE...............................
 def BASHKETINGELLORE():
     teksti = input("Shkruani nje tekst: ")
     teksti.strip()
@@ -41,9 +49,36 @@ def BASHKETINGELLORE():
             num += 1
     print("Numri i bashketingelloreve ne tekstin " + teksti + " eshte " + str(num))
 
-def PRINTIMI():
-    
 
+#...........................Metoda PRINTIMI........................................
+def PRINTIMI():
+    fjalia = input("Shkruani nje fjali: ")
+    print(fjalia.strip())
+
+
+#...........................Metoda EMRIIKOMPJUTERIT................................
+def EMRIIKOMPJUTERIT():
+    try:
+        print("Emri i hostit eshte "+ str(socket.gethostbyaddr(host)))
+    except socket.error as error:
+        print("Emri i hostit nuk mund te gjendet")
+
+
+#...........................Metoda KOHA............................................
+def KOHA():
+    x = datetime.datetime.now()
+    print("Koha aktuale ne server eshte " + x.strftime("%H:%M:%S"))
+
+
+#...........................Metoda LOJA............................................
+def LOJA():
+    print("Shtate numra te rastesishem nga rangu [1, 49] jane: (", end="")
+    for x in range(6):
+        print(random.randint(1, 49), end=",")
+    print(random.randint(1, 49), end=")")
+
+
+#...........................Metoda BISEDA...........................................
 def BISEDA():
     while 1:
         data = input("\nYou: ")
