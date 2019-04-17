@@ -31,11 +31,22 @@ def IPADRESA():
 def NUMRIIPORTIT():
     print("Numri i portit te klientit eshte: " + str(address[1]))
 
+def BASHKETINGELLORE():
+    teksti = input("Shkruani nje tekst: ")
+    teksti.strip()
+    zanoret = {'a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y'}
+    num = 0
+    for i in range (len(list(teksti))):
+        if list(teksti)[i].isaplha == True & list(teksti)[i] not in zanoret:
+            num += 1
+    print("Numri i bashketingelloreve ne tekstin " + teksti + " eshte " + str(num))
 
+def PRINTIMI():
+    
 
-def CONVERSATION():
+def BISEDA():
     while 1:
-        data = input("\nYou:  ")
+        data = input("\nYou: ")
         if data == 'quit':
             print("Lidhja me klientit u mbyll...")
             connection.send(str.encode(data))
