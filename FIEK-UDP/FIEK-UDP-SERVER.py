@@ -125,6 +125,11 @@ def BISEDA(address):
                 print("Client:  " + str(rec))
     return
 
+
+#...........................Metoda MAX..............................................
+def MAX(num1, num2):
+    return max(num1, num2)
+
 #...........................Metoda Thread...........................................
 def thread(connection, address):
     while True:
@@ -161,9 +166,13 @@ def thread(connection, address):
             soketi.sendto(str.encode(KONVERTIMI(opsioni, numri)), address)
         elif kerkesa[0] == "BISEDA":
             BISEDA(address)
+        elif kerkesa[0] == "MAX":
+            num1 = kerkesa[1]
+            num2 = kerkesa[2]
+            soketi.sendto(str.encode(MAX(num1, num2)), address)
         else:
             soketi.sendto(str.encode("Kerkesa nuk ekziston!"), address)
-    connection.close()
+    soketi.close()
     return
 
 #Lidhja e serverit me klientin

@@ -20,7 +20,7 @@ try:
     soketi.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     soketi.bind((host, port))
     print("Serveri eshte startuar ne portin: " + str(port))
-    soketi.listen(5)
+    soketi.listen(10)
     print("Serveri eshte i gatshem te pranoj kerkesa...")
 except socket.error as error:
     print("Error gjate lidhjes se hostit me portin: " + str(error))
@@ -129,6 +129,11 @@ def BISEDA():
                 print("Client:  " + rec)
     return
 
+
+#...........................Metoda MAX..............................................
+def MAX(num1, num2):
+    return max(num1, num2)
+
 #...........................Metoda Thread...........................................
 def thread(connection, address):
     while True:
@@ -165,6 +170,10 @@ def thread(connection, address):
             connection.send(str.encode(KONVERTIMI(opsioni, numri)))
         elif kerkesa[0] == "BISEDA":
             BISEDA()
+        elif kerkesa[0] == "MAX":
+            num1 = kerkesa[1]
+            num2 = kerkesa[2]
+            connection.send(str.encode(MAX(num1, num2)))
         else:
             connection.send(str.encode("Kerkesa nuk ekziston!"))
     connection.close()

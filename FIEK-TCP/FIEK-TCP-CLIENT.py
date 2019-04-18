@@ -2,7 +2,8 @@ import socket
 
 serverName = 'localhost'
 port = 12000
-
+print("Emri i serverit eshte: " + serverName)
+print("Emri i portit eshte: " + str(port))
 ndrServ = input("Deshironi te ndryshoni emrin e serverit: 'p' - po,  'j' - jo")
 if ndrServ == 'p' or ndrServ == 'P':
     serverName = input("Shrkuaj emrin e serverit: ")
