@@ -5,7 +5,7 @@ import math
 from _thread import *
 
 host = "localhost"
-port = 9999
+port = 12000
 global soketi
 
 
@@ -136,6 +136,7 @@ def thread(connection, address):
         kerkesa = kerkesa.split(" ")
         if kerkesa[0] == "QUIT":
             print("Klienti ka mbyllur lidhjen...")
+            connection.send(str.encode("Lidhja u mbyll"))
             break
         if kerkesa[0] == "IPADRESA":
             connection.send(str.encode(IPADRESA()))
@@ -166,10 +167,16 @@ def thread(connection, address):
             BISEDA()
         else:
             connection.send(str.encode("Kerkesa nuk ekziston!"))
+    connection.close()
     return
 
 #Lidhja e serverit me klientin
-while 1:
-    connection, address = soketi.accept()
-    print("Serveri u lidh me klientin me IP adrese " + str(address[0]) + " ne portin " + str(address[1]))
-    start_new_thread(thread, (connection, address))
+try:
+    while 1:
+        connection, address = soketi.accept()
+        print("Serveri u lidh me klientin me IP adrese " + str(address[0]) + " ne portin " + str(address[1]))
+        start_new_thread(thread, (connection, address))
+except socket.error as error:
+    print("Error gjate pranimit te kerkeses se klientit per lidhje")
+
+
