@@ -1,6 +1,7 @@
 import socket
 import datetime
 import random
+import math
 
 host = "localhost"
 port = 9999
@@ -23,9 +24,11 @@ try:
 except socket.error as error:
     print("Error gjate lidhjes se hostit me portin: " + str(error))
 
+#Lidhja e serverit me klientin
 while 1:
     connection, address = soketi.accept()
     print("Serveri u lidh me klientin me IP adrese " + str(address[0]) + " ne portin " + str(address[1]))
+
 
 
 #...........................Metoda IPADRESA......................................
@@ -39,7 +42,7 @@ def NUMRIIPORTIT():
 
 
 #...........................Metoda BASHKETINGELLORE...............................
-def BASHKETINGELLORE():
+def BASHKETINGELLORE(teksti):
     teksti = input("Shkruani nje tekst: ")
     teksti.strip()
     zanoret = {'a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y'}
@@ -51,9 +54,9 @@ def BASHKETINGELLORE():
 
 
 #...........................Metoda PRINTIMI........................................
-def PRINTIMI():
+def PRINTIMI(fjalia):
     fjalia = input("Shkruani nje fjali: ")
-    print(fjalia.strip())
+    return fjalia.strip()
 
 
 #...........................Metoda EMRIIKOMPJUTERIT................................
@@ -72,14 +75,53 @@ def KOHA():
 
 #...........................Metoda LOJA............................................
 def LOJA():
-    print("Shtate numra te rastesishem nga rangu [1, 49] jane: (", end="")
+    print("(", end="")
     for x in range(6):
         print(random.randint(1, 49), end=",")
     print(random.randint(1, 49), end=")")
 
 
+#...........................Metoda FIBONACCI........................................
+def FIBONACCI(numri):
+    num1 = 0
+    num2 = 1
+    i = 0
+    if numri < 0:
+        print("Numri i plote pas funksionit duhet te jete pozitiv")
+    elif numri == 0:
+        print(num1)
+    elif numri == 1:
+        print(num2)
+    else:
+        while i <= numri:
+            shuma = num1 + num2
+            num1 = num2
+            num2 = shuma
+            i += 1
+    return num2
+
+
+# ...........................Metoda KONVERTIMI......................................
+def KONVERTIMI(opsioni, numri):
+        numri = float(numri)
+        if opsioni == "KilowattToHorsepower":
+            return numri * 1.341
+        elif opsioni == "HorsepowerToKilowatt":
+            return numri / 1.341
+        elif opsioni == "DegreesToRadians":
+            return numri * math.pi / 180
+        elif opsioni == "RadiansToDegrees":
+            return numri * 180 / math.pi
+        elif opsioni == "GallonsToLiters":
+            return numri * 3.785
+        elif opsioni == "LitersToGallons":
+            return numri / 3.785
+        else:
+            print("Opsioni nuk ekziston!")
+
+
 #...........................Metoda BISEDA...........................................
-def BISEDA():
+def BISEDA(connection):
     while 1:
         data = input("\nYou: ")
         if data == 'quit':
@@ -95,3 +137,5 @@ def BISEDA():
                     connection.close()
                     break
                 print("Client:  " + rec)
+
+
