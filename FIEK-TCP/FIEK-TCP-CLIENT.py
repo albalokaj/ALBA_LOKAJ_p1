@@ -8,7 +8,8 @@ soketi = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 soketi.connect((serverName, port))
 
 while True:
-    print("Shkruaj njeren nga kerkesat: ")
+    print("\nZgjedh njeren nga kerkesat: IPADRESA, NUMRIIPORTIT, BASHKETINGELLORE tekst, PRINTIMI tekst, EMRIIKOMPJUTERIT,"
+          "KOHA, LOJA, FIBONACCI integer, KONVERTIMI opsion numer, BISEDA, QUIT")
     kerkesa = input("Kerkesa: ")
     format1 = str(kerkesa.strip())
     format = str(format1.upper())

@@ -108,6 +108,8 @@ def KONVERTIMI(opsioni, numri):
         return str(numri * 3.785)
     elif opsioni == "LITERSTOGALLONS":
         return str(numri / 3.785)
+    else:
+        return "Opsioni nuk ekziston!"
 
 
 #...........................Metoda BISEDA...........................................
