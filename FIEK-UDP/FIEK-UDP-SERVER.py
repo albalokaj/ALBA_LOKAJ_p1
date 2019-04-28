@@ -4,6 +4,7 @@ import random
 import math
 from _thread import *
 
+
 udpHost = 'localhost'
 udpPort = 12000
 global soketi
@@ -17,7 +18,6 @@ except socket.error as error:
 
 #Lidhja e hostit me portin
 try:
-    soketi.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     soketi.bind((udpHost, udpPort))
     print("Serveri eshte startuar ne portin: " + str(udpPort))
 except socket.error as error:
@@ -113,12 +113,13 @@ def BISEDA(address):
     while 1:
         data = input("You: ")
         if data == 'quit':
-            soketi.sendto(str.encode(data), address)
+            soketi.sendto(data.encode(), address)
             print("Biseda perfundoi...")
             break
         if len(str.encode(data)) > 0:
-                soketi.sendto(str.encode(data), address)
-                rec, address = soketi.recvfrom(1024)
+                soketi.sendto(data.encode(), address)
+                recv, address = soketi.recvfrom(1024)
+                rec = recv.decode()
                 if rec == "quit":
                     print("Biseda perfundoi...")
                     break
@@ -130,59 +131,53 @@ def BISEDA(address):
 def MAX(num1, num2):
     return max(num1, num2)
 
-#...........................Metoda Thread...........................................
-def thread(connection, address):
-    while True:
-        kerkesa, address = str(soketi.recvfrom(1024))
-        kerkesa = kerkesa.split(" ")
-        if kerkesa[0] == "QUIT":
-            print("Klienti ka mbyllur lidhjen...")
-            soketi.sendto(str.encode("Lidhja u mbyll"), address)
-            break
-        if kerkesa[0] == "IPADRESA":
-            soketi.sendto(str.encode(IPADRESA()), address)
-        elif kerkesa[0] == "NUMRIIPORTIT":
-            soketi.sendto(str.encode(NUMRIIPORTIT()), address)
-        elif kerkesa[0] == "BASHKETINGELLORE":
-            teksti = ""
-            teksti = str.join(" ", kerkesa[1:])
-            soketi.sendto(str.encode(BASHKETINGELLORE(teksti)), address)
-        elif kerkesa[0] == "PRINTIMI":
-            fjalia = ""
-            fjalia = str.join(" ", kerkesa[1:])
-            soketi.sendto(str.encode(PRINTIMI(fjalia)), address)
-        elif kerkesa[0] == "EMRIIKOMPJUTERIT":
-            soketi.sendto(str.encode(EMRIIKOMPJUTERIT()), address)
-        elif kerkesa[0] == "KOHA":
-            soketi.sendto(str.encode(KOHA()), address)
-        elif kerkesa[0] == "LOJA":
-            soketi.sendto(str.encode(LOJA()), address)
-        elif kerkesa[0] == "FIBONACCI":
-            numri = kerkesa[1]
-            soketi.sendto(str.encode(FIBONACCI(numri)), address)
-        elif kerkesa[0] == "KONVERTIMI":
-            opsioni = kerkesa[1]
-            numri = kerkesa[2]
-            soketi.sendto(str.encode(KONVERTIMI(opsioni, numri)), address)
-        elif kerkesa[0] == "BISEDA":
-            BISEDA(address)
-        elif kerkesa[0] == "MAX":
-            num1 = kerkesa[1]
-            num2 = kerkesa[2]
-            soketi.sendto(str.encode(MAX(num1, num2)), address)
-        else:
-            soketi.sendto(str.encode("Kerkesa nuk ekziston!"), address)
-    soketi.close()
-    return
+#...........................Metoda Perpunimi........................................
+def Perpunimi(kerkesa1, address):
+    kerkesa2 = kerkesa1.decode()
+    kerkesa = kerkesa2.split(" ")
+    if kerkesa[0] == "QUIT":
+        print("Klienti ka mbyllur lidhjen...")
+        soketi.sendto(str.encode("Lidhja u mbyll"), address)
+        soketi.close()
+    if kerkesa[0] == "IPADRESA":
+        soketi.sendto(str.encode(IPADRESA()), address)
+    elif kerkesa[0] == "NUMRIIPORTIT":
+        soketi.sendto(str.encode(NUMRIIPORTIT()), address)
+    elif kerkesa[0] == "BASHKETINGELLORE":
+        teksti = ""
+        teksti = str.join(" ", kerkesa[1:])
+        soketi.sendto(str.encode(BASHKETINGELLORE(teksti)), address)
+    elif kerkesa[0] == "PRINTIMI":
+        fjalia = ""
+        fjalia = str.join(" ", kerkesa[1:])
+        soketi.sendto(str.encode(PRINTIMI(fjalia)), address)
+    elif kerkesa[0] == "EMRIIKOMPJUTERIT":
+        soketi.sendto(str.encode(EMRIIKOMPJUTERIT()), address)
+    elif kerkesa[0] == "KOHA":
+        soketi.sendto(str.encode(KOHA()), address)
+    elif kerkesa[0] == "LOJA":
+        soketi.sendto(str.encode(LOJA()), address)
+    elif kerkesa[0] == "FIBONACCI":
+        numri = kerkesa[1]
+        soketi.sendto(str.encode(FIBONACCI(numri)), address)
+    elif kerkesa[0] == "KONVERTIMI":
+        opsioni = kerkesa[1]
+        numri = kerkesa[2]
+        soketi.sendto(str.encode(KONVERTIMI(opsioni, numri)), address)
+    elif kerkesa[0] == "BISEDA":
+        BISEDA(address)
+    elif kerkesa[0] == "MAX":
+        num1 = kerkesa[1]
+        num2 = kerkesa[2]
+        soketi.sendto(str.encode(MAX(num1, num2)), address)
+    else:
+        soketi.sendto(str.encode("Kerkesa nuk ekziston!"), address)
 
 #Lidhja e serverit me klientin
 try:
     while 1:
-        connection, address = soketi.recvfrom(1024)
+        kerkesa1, address = soketi.recvfrom(1024)
         print("Serveri u lidh me klientin me IP adrese " + str(address[0]) + " ne portin " + str(address[1]))
-        start_new_thread(thread, (connection, address))
-except socket.error as error:
-    print("Error gjate pranimit te kerkeses se klientit per lidhje")
-
-
-
+        start_new_thread(Perpunimi, (kerkesa1, address))
+except socket.error as err:
+    print("Error gjate pranimit te kerkeses")
